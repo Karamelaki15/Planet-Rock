@@ -90,17 +90,16 @@
       <h2>📻 Red 96.3 (Athens Live)</h2>
       <audio id="radioPlayer" preload="none">
         <source src="https://stream.radiojar.com/red963" type="audio/mpeg">
-        <source src="https://s3.radiojar.com/red963" type="audio/mpeg">
       </audio>
-      <button class="btn" onclick="toggleRadio()">▶ Play Live Radio</button>
+      <button class="btn" id="radioBtn" onclick="toggleRadio()">▶ Play Live Radio</button>
     </div>
 
-    <!-- YouTube Playlist Player (Fixed with starting video ID) -->
+    <!-- YouTube Playlist Player -->
     <div class="card">
       <h2>🎧 Η Rock Playlist μου</h2>
       <div class="video-container">
         <iframe 
-          src="https://www.youtube.com/embed/eVTXPUF4Oz4?list=PLD1ksap8J-BQ" 
+          src="https://www.youtube-nocookie.com/embed/videoseries?list=PLD1ksap8J-BQ" 
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
           allowfullscreen>
         </iframe>
@@ -111,15 +110,16 @@
 
   <script>
     const radio = document.getElementById('radioPlayer');
-    const btn = document.querySelector('.btn');
+    const btn = document.getElementById('radioBtn');
 
     function toggleRadio() {
       if (radio.paused) {
+        radio.load(); // Φρεσκάρει το live stream
         radio.play().then(() => {
           btn.innerText = '⏸ Pause Live Radio';
         }).catch(err => {
           console.log("Playback error: ", err);
-          alert("Κάντε μια κλικ στη σελίδα και πατήστε ξανά Play!");
+          alert("Κάντε ένα κλικ στη σελίδα και πατήστε ξανά Play!");
         });
       } else {
         radio.pause();
