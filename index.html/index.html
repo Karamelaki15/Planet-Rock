@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My 24/7 Rock Radio</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .player-card {
+            background-color: #1e1e1e;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            width: 320px;
+        }
+        h1 { color: #ff3b30; font-size: 1.8rem; margin-bottom: 5px; }
+        .subtitle { color: #8e8e93; font-size: 0.9rem; margin-bottom: 25px; }
+        .now-playing {
+            background-color: #2c2c2e;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            color: #007aff;
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .controls button {
+            background-color: #ff3b30;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            margin: 5px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .controls button:hover { background-color: #e02b20; transform: scale(1.05); }
+        .volume-container { margin-top: 20px; }
+        input[type=range] { accent-color: #ff3b30; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <div class="player-card">
+        <h1>🎸 Custom Rock Radio</h1>
+        <div class="subtitle">24/7 Automated Rock Playlist</div>
+
+        <div class="now-playing" id="track-name">Press Play to Start</div>
+
+        <div class="controls">
+            <button id="play-btn" onclick="togglePlay()">▶ Play</button>
+            <button onclick="nextTrack()">⏭ Next</button>
+        </div>
+
+        <div class="volume-container">
+            🔊 <input type="range" id="volume" min="0" max="1" step="0.05" value="0.8" onchange="setVolume(this.value)">
+        </div>
+
+        <!-- HTML5 Audio Engine -->
+        <audio id="audio-player" onended="nextTrack()"></audio>
+    </div>
+
+    <script>
+        // Your playlist array (Replace stream URLs with direct .mp3 file links or radio stream links)
+        const playlist = [
+            { title: "Planet Rock (Live Stream)", url: "https://stream-al.planetradio.co.uk/planetrock.mp3" },
+            { title: "Rock Antenne (Live Stream)", url: "https://stream.rockantenne.de/rockantenne/stream/mp3" },
+            { title: "Red 96.3 (Athens Live)", url: "https://stream.radiojar.com/redfm963" }
+        ];
+
+        let currentIndex = 0;
+        let isPlaying = false;
+        const player = document.getElementById("audio-player");
+        const trackDisplay = document.getElementById("track-name");
+        const playBtn = document.getElementById("play-btn");
+
+        function loadTrack(index) {
+            player.src = playlist[index].url;
+            trackDisplay.innerText = "🎵 " + playlist[index].title;
+        }
+
+        function togglePlay() {
+            if (!player.src) loadTrack(currentIndex);
+
+            if (isPlaying) {
+                player.pause();
+                playBtn.innerText = "▶ Play";
+                isPlaying = false;
+            } else {
+                player.play();
+                playBtn.innerText = "⏸ Pause";
+                isPlaying = true;
+            }
+        }
+
+        function nextTrack() {
+            currentIndex = (currentIndex + 1) % playlist.length;
+            loadTrack(currentIndex);
+            if (isPlaying) player.play();
+        }
+
+        function setVolume(val) {
+            player.volume = val;
+        }
+    </script>
+</body>
+</html>
