@@ -20,7 +20,7 @@
 
     .main-container {
       width: 100%;
-      max-width: 500px;
+      max-width: 600px;
       display: flex;
       flex-direction: column;
       gap: 20px;
@@ -61,33 +61,50 @@
     .btn:hover {
       background-color: #e03126;
     }
+
+    .video-container {
+      position: relative;
+      width: 100%;
+      padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+      height: 0;
+    }
+
+    .video-container iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 12px;
+      border: none;
+    }
   </style>
 </head>
 <body>
 
   <div class="main-container">
     
-    <!-- Τμήμα Live Ραδιοφώνου (Red 96.3) -->
+    <!-- Red 96.3 Live Radio -->
     <div class="card">
       <h1>🎸 Planet Rock Live</h1>
       <h2>📻 Red 96.3 (Athens Live)</h2>
-      <audio id="radioPlayer" src="https://stream.radiojar.com/red963.mp3"></audio>
+      <audio id="radioPlayer" preload="none">
+        <source src="https://stream.radiojar.com/red963" type="audio/mpeg">
+        <source src="https://s3.radiojar.com/red963" type="audio/mpeg">
+      </audio>
       <button class="btn" onclick="toggleRadio()">▶ Play Live Radio</button>
     </div>
 
-    <!-- Τμήμα Spotify Playlist -->
+    <!-- YouTube Playlist Player -->
     <div class="card">
       <h2>🎧 Η Rock Playlist μου</h2>
-      <iframe 
-        style="border-radius:12px" 
-        src="https://open.spotify.com/embed/playlist/5uNtcqAckE4Bzc7V5pUYQb?utm_source=generator&theme=0" 
-        width="100%" 
-        height="352" 
-        frameBorder="0" 
-        allowfullscreen="" 
-        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
-        loading="lazy">
-      </iframe>
+      <div class="video-container">
+        <iframe 
+          src="https://www.youtube.com/embed/videoseries?list=PLD1ksap8J-BQ" 
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+          allowfullscreen>
+        </iframe>
+      </div>
     </div>
 
   </div>
@@ -98,8 +115,11 @@
 
     function toggleRadio() {
       if (radio.paused) {
-        radio.play();
-        btn.innerText = '⏸ Pause Live Radio';
+        radio.play().then(() => {
+          btn.innerText = '⏸ Pause Live Radio';
+        }).catch(err => {
+          console.log("Playback error: ", err);
+        });
       } else {
         radio.pause();
         btn.innerText = '▶ Play Live Radio';
