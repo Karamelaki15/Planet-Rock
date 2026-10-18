@@ -119,8 +119,8 @@
   </div>
 
   <script>
-    // --- RED 96.3 LIVE STREAM ---
-    let liveAudio = new Audio('https://stream.radiojar.com/red963');
+    // --- RED 96.3 LIVE STREAM (Fixed with .mp3 endpoint) ---
+    let liveAudio = new Audio('https://stream.radiojar.com/red963.mp3');
     let isRadioPlaying = false;
     const radioBtn = document.getElementById('radioBtn');
     const radioStatus = document.getElementById('radioStatus');
@@ -140,7 +140,7 @@
           radioStatus.innerText = "Ζωντανά από Red 96.3";
         }).catch(err => {
           console.error("Radio error:", err);
-          radioStatus.innerText = "Σφάλμα σύνδεσης. Πατήστε ξανά Play.";
+          radioStatus.innerText = "Το στρεαμ μπλοκαρίστηκε από τον browser. Δοκιμάστε ανανέωση.";
         });
       } else {
         liveAudio.pause();
@@ -150,7 +150,7 @@
       }
     }
 
-    // --- MP3 PLAYLIST (Extracted from your files) ---
+    // --- MP3 PLAYLIST ---
     const playlist = [
       { title: "AC/DC - Back In Black", file: "AC DC - Back In Black (Official Video).mp3" },
       { title: "AC/DC - Highway to Hell", file: "AC DC - Highway to Hell (Official Video).mp3" },
