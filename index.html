@@ -6,18 +6,16 @@
   <title>Planet Rock Live</title>
   <style>
     :root {
-      --aero-blue: #0072ff;
-      --aero-cyan: #00c6ff;
-      --aero-green: #38ef7d;
-      --accent-yellow: #ffea00;
-      --accent-gold: #ffaa00;
-      --glass-bg: rgba(255, 255, 255, 0.25);
-      --glass-border: rgba(255, 255, 255, 0.6);
-      --text-dark: #002244;
+      --aero-yellow-glow: #ffee55;
+      --aero-gold: #ffaa00;
+      --aero-amber: #ff8800;
+      --glass-bg: rgba(255, 235, 150, 0.18);
+      --glass-border: rgba(255, 240, 180, 0.5);
+      --text-dark: #3a2200;
     }
 
     body {
-      background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+      background: linear-gradient(135deg, #1c1500 0%, #3d2c00 40%, #2b1f00 100%);
       color: #ffffff;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       display: flex;
@@ -32,18 +30,47 @@
       overflow-x: hidden;
     }
 
-    /* Frutiger Aero Glow/Bubble Background Layer */
-    body::before {
+    /* Κινούμενο Frutiger Aero Yellow Glow Background */
+    body::before, body::after {
       content: '';
       position: absolute;
-      top: -10%;
-      left: 10%;
-      width: 500px;
-      height: 500px;
-      background: radial-gradient(circle, rgba(0, 198, 255, 0.4) 0%, rgba(0, 0, 0, 0) 70%);
       border-radius: 50%;
+      filter: blur(80px);
       z-index: 0;
       pointer-events: none;
+      animation: floatGlow 12s infinite alternate ease-in-out;
+    }
+
+    body::before {
+      top: -10%;
+      left: 15%;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(255, 220, 50, 0.45) 0%, rgba(255, 170, 0, 0) 70%);
+    }
+
+    body::after {
+      bottom: -10%;
+      right: 15%;
+      width: 450px;
+      height: 450px;
+      background: radial-gradient(circle, rgba(255, 180, 0, 0.35) 0%, rgba(255, 230, 100, 0) 70%);
+      animation-delay: -6s;
+    }
+
+    @keyframes floatGlow {
+      0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 0.8;
+      }
+      50% {
+        transform: translate(30px, 40px) scale(1.15);
+        opacity: 1;
+      }
+      100% {
+        transform: translate(-30px, -20px) scale(0.95);
+        opacity: 0.7;
+      }
     }
 
     .main-container {
@@ -52,16 +79,17 @@
       z-index: 1;
     }
 
-    /* Frutiger Aero Glassmorphism Card */
+    /* Frutiger Aero Glassmorphism Card (Yellow Tinted) */
     .card {
       background: var(--glass-bg);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
       border: 2px solid var(--glass-border);
       padding: 40px 30px;
       border-radius: 30px;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), 
-                  inset 0 1px 2px rgba(255, 255, 255, 0.8);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 
+                  0 0 30px rgba(255, 200, 0, 0.25),
+                  inset 0 1px 3px rgba(255, 255, 220, 0.8);
       text-align: center;
       position: relative;
     }
@@ -70,50 +98,51 @@
       margin: 0 0 10px 0;
       font-size: 2.5rem;
       letter-spacing: -0.5px;
-      color: var(--accent-yellow);
-      text-shadow: 0 3px 10px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 234, 0, 0.6);
+      color: var(--aero-yellow-glow);
+      text-shadow: 0 3px 12px rgba(0, 0, 0, 0.6), 0 0 25px rgba(255, 234, 0, 0.8);
     }
 
     h2 {
       margin: 0 0 25px 0;
       font-size: 1.2rem;
-      color: #e0f7fc;
+      color: #fff6d0;
       font-weight: 500;
-      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
     }
 
-    /* Now Playing Display */
+    /* Track Display Box */
     .now-playing-box {
-      background: rgba(0, 20, 40, 0.4);
+      background: rgba(30, 20, 0, 0.5);
       padding: 18px 20px;
       border-radius: 20px;
-      border: 1px solid rgba(255, 255, 255, 0.3);
+      border: 1px solid rgba(255, 230, 150, 0.3);
       margin-bottom: 25px;
-      box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.3);
+      box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.5), 0 0 15px rgba(255, 200, 0, 0.15);
     }
 
     .now-playing-title {
-      color: var(--accent-yellow);
+      color: #fff280;
       font-weight: 700;
       font-size: 1.2rem;
       margin: 0;
       word-break: break-word;
-      text-shadow: 0 1px 5px rgba(0,0,0,0.5);
+      text-shadow: 0 1px 6px rgba(0,0,0,0.7);
     }
 
     /* Glossy Frutiger Aero Yellow Button */
     .btn-main {
-      background: linear-gradient(180deg, #fffb96 0%, #ffea00 50%, #ffaa00 51%, #e69500 100%);
+      background: linear-gradient(180deg, #ffffff 0%, #ffea00 35%, #ff9900 65%, #cc6600 100%);
       color: var(--text-dark);
       border: 2px solid #ffffff;
       padding: 18px 40px;
       font-size: 1.3rem;
-      font-weight: 800;
+      font-weight: 900;
       border-radius: 50px;
       cursor: pointer;
-      box-shadow: 0 8px 25px rgba(255, 170, 0, 0.5), 
-                  inset 0 2px 2px rgba(255, 255, 255, 0.9);
-      transition: all 0.2s ease;
+      box-shadow: 0 8px 30px rgba(255, 170, 0, 0.6), 
+                  0 0 20px rgba(255, 230, 0, 0.4),
+                  inset 0 2px 3px rgba(255, 255, 255, 1);
+      transition: all 0.25 ease;
       width: 100%;
       max-width: 320px;
       margin-top: 5px;
@@ -122,9 +151,10 @@
     }
 
     .btn-main:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 12px 30px rgba(255, 234, 0, 0.7), 
-                  inset 0 2px 2px rgba(255, 255, 255, 1);
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 12px 35px rgba(255, 200, 0, 0.8), 
+                  0 0 30px rgba(255, 240, 100, 0.6),
+                  inset 0 2px 3px rgba(255, 255, 255, 1);
     }
 
     .btn-main:active {
@@ -133,10 +163,10 @@
 
     .status-text {
       font-size: 1rem;
-      color: #ffffff;
+      color: #fff8e0;
       margin-top: 15px;
       min-height: 24px;
-      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
       font-weight: 600;
     }
 
@@ -147,10 +177,10 @@
       max-width: 600px;
       font-size: 0.75rem;
       line-height: 1.4;
-      color: #d0e8f2;
+      color: #f0e6c0;
       opacity: 0.85;
       text-align: center;
-      border-top: 1px solid rgba(255, 255, 255, 0.2);
+      border-top: 1px solid rgba(255, 230, 150, 0.2);
     }
   </style>
 </head>
@@ -173,104 +203,9 @@
 
   </div>
 
-  <!-- LEGAL DISCLAIMER (Χωρίς καμία αναφορά στον Red 96.3) -->
   <footer class="disclaimer-footer">
     <strong>Legal Notice & Disclaimer:</strong><br>
     This website is an independent fan project created for personal entertainment purposes only. It is not affiliated with, endorsed by, or connected to Planet Rock UK. The name "Planet Rock" is used purely as a fan homage. All audio tracks, music recordings, logos, and trademarks belong exclusively to their respective owners, artists, and record labels. No copyright infringement is intended.
   </footer>
 
   <script>
-    // --- MP3 PLAYLIST AUDIO ---
-    let mp3Audio = new Audio();
-    let isPlaylistPlaying = false;
-    const playlistBtn = document.getElementById('playlistBtn');
-    const playlistStatus = document.getElementById('playlistStatus');
-    const nowPlaying = document.getElementById('nowPlaying');
-
-    const playlist = [
-      { title: "AC/DC - Back In Black", file: "AC DC - Back In Black (Official Video).mp3" },
-      { title: "AC/DC - Highway to Hell", file: "AC DC - Highway to Hell (Official Video).mp3" },
-      { title: "Bon Jovi - It's My Life", file: "Bon Jovi - It's My Life [Lyrics].mp3" },
-      { title: "Bon Jovi - Livin' On A Prayer", file: "Bon Jovi - Livin' On A Prayer.mp3" },
-      { title: "Bon Jovi - You Give Love A Bad Name", file: "Bon Jovi - You Give Love A Bad Name.mp3" },
-      { title: "Scorpions - Dynamite", file: "Dynamite (2015 - Remaster).mp3" },
-      { title: "Eagles - Hotel California", file: "Eagles - Hotel California Lyric Video Lirik Indo....mp3" },
-      { title: "Evanescence - Bring Me To Life", file: "Evanescence - Bring Me To Life (Official HD ....mp3" },
-      { title: "Guns N' Roses - Sweet Child O' Mine", file: "Guns N' Roses - Sweet Child O' Mine (Official ....mp3" },
-      { title: "Guns N' Roses - Welcome To The Jungle", file: "Guns N' Roses - Welcome To The Jungle.mp3" },
-      { title: "Linkin Park - In The End", file: "In The End [Official HD Music Video] - Linkin ....mp3" },
-      { title: "Kiss - I Was Made For Lovin' You", file: "Kiss - I Was Made For Lovin' You.mp3" },
-      { title: "Linkin Park - Numb", file: "Numb (Official Music Video) [4K UPGRADE] -....mp3" },
-      { title: "R.E.M. - Losing My Religion", file: "R.E.M. - Losing My Religion (Official HD Musi....mp3" },
-      { title: "Kiss - Rock And Roll All Nite", file: "Rock And Roll All Nite.mp3" },
-      { title: "Scorpions - Bad Boys Running Wild", file: "Scorpions - Bad Boys Running Wild (Visualize....mp3" },
-      { title: "Scorpions - Big City Nights", file: "Scorpions - Big City Nights (Official Video).mp3" },
-      { title: "Scorpions - In Trance", file: "Scorpions - In Trance.mp3" },
-      { title: "Scorpions - No One Like You", file: "Scorpions - No One Like You (Official Video).mp3" },
-      { title: "Scorpions - Send Me An Angel", file: "Scorpions - Send Me An Angel.mp3" },
-      { title: "Scorpions - The Zoo", file: "Scorpions - The Zoo (Visualizer).mp3" },
-      { title: "Scorpions - When The Smoke Is Going Down", file: "Scorpions - When The Smoke Is Going Down ....mp3" },
-      { title: "Scorpions - Wind Of Change", file: "Scorpions - Wind Of Change (Official Music V....mp3" },
-      { title: "Scorpions - Pictured Life", file: "Scorpions Pictured Life.mp3" },
-      { title: "Scorpions - Still Loving You", file: "Still Loving You - Scorpions [Remastered].mp3" },
-      { title: "Survivor - Eye Of The Tiger", file: "Survivor - Eye Of The Tiger (Official HD Video....mp3" },
-      { title: "The Beatles - Here Comes The Sun", file: "The Beatles - Here Comes The Sun (Lyrics).mp3" }
-    ];
-
-    let currentTrackIndex = 0;
-
-    function loadTrack(index, autoPlay = false) {
-      if (playlist.length === 0) return;
-      currentTrackIndex = index;
-      mp3Audio.src = playlist[currentTrackIndex].file;
-      nowPlaying.innerText = "🎵 " + playlist[currentTrackIndex].title;
-      playlistStatus.innerText = "Έτοιμο";
-      if (autoPlay) {
-        playPlaylist();
-      }
-    }
-
-    function togglePlaylist() {
-      if (!isPlaylistPlaying) {
-        playPlaylist();
-      } else {
-        pausePlaylist();
-      }
-    }
-
-    function playPlaylist() {
-      mp3Audio.play().then(() => {
-        isPlaylistPlaying = true;
-        playlistBtn.innerText = '⏸ PAUSE';
-        playlistBtn.style.background = 'linear-gradient(180deg, #999 0%, #444 50%, #222 51%, #111 100%)';
-        playlistBtn.style.color = '#fff';
-        playlistStatus.innerText = "🎵 Παίζει τώρα...";
-      }).catch(err => {
-        console.error(err);
-        playlistStatus.innerText = "Σφάλμα αναπαραγωγής";
-      });
-    }
-
-    function pausePlaylist() {
-      mp3Audio.pause();
-      isPlaylistPlaying = false;
-      playlistBtn.innerText = '▶ PLAY';
-      playlistBtn.style.background = 'linear-gradient(180deg, #fffb96 0%, #ffea00 50%, #ffaa00 51%, #e69500 100%)';
-      playlistBtn.style.color = 'var(--text-dark)';
-      playlistStatus.innerText = "Σε παύση";
-    }
-
-    function nextTrack() {
-      currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
-      loadTrack(currentTrackIndex, true);
-    }
-
-    mp3Audio.addEventListener('ended', () => {
-      nextTrack();
-    });
-
-    loadTrack(0, false);
-  </script>
-
-</body>
-</html>
