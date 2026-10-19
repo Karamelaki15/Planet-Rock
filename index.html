@@ -3,103 +3,128 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Planet Rock Radio</title>
+  <title>Planet Rock Live</title>
   <style>
     :root {
-      --bg-color: #0b0c10;
-      --card-bg: rgba(255, 255, 255, 0.04);
-      --card-border: rgba(255, 255, 255, 0.08);
-      --accent-red: #ff2a4b;
-      --accent-glow: rgba(255, 42, 75, 0.4);
-      --text-main: #f0f0f0;
-      --text-dim: #a0a0a0;
+      --aero-blue: #0072ff;
+      --aero-cyan: #00c6ff;
+      --aero-green: #38ef7d;
+      --accent-yellow: #ffea00;
+      --accent-gold: #ffaa00;
+      --glass-bg: rgba(255, 255, 255, 0.25);
+      --glass-border: rgba(255, 255, 255, 0.6);
+      --text-dark: #002244;
     }
 
     body {
-      background: radial-gradient(circle at top, #1a0810 0%, var(--bg-color) 70%);
-      color: var(--text-main);
-      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+      color: #ffffff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: center;
       min-height: 100vh;
       margin: 0;
-      padding: 24px 16px;
+      padding: 20px;
       box-sizing: border-box;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Frutiger Aero Glow/Bubble Background Layer */
+    body::before {
+      content: '';
+      position: absolute;
+      top: -10%;
+      left: 10%;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(0, 198, 255, 0.4) 0%, rgba(0, 0, 0, 0) 70%);
+      border-radius: 50%;
+      z-index: 0;
+      pointer-events: none;
     }
 
     .main-container {
       width: 100%;
-      max-width: 460px;
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
+      max-width: 650px;
+      z-index: 1;
     }
 
+    /* Frutiger Aero Glassmorphism Card */
     .card {
-      background: var(--card-bg);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid var(--card-border);
-      padding: 24px 20px;
-      border-radius: 20px;
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 2px solid var(--glass-border);
+      padding: 40px 30px;
+      border-radius: 30px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), 
+                  inset 0 1px 2px rgba(255, 255, 255, 0.8);
       text-align: center;
-      transition: border-color 0.2s ease;
-      overflow: hidden;
-    }
-
-    .card:hover {
-      border-color: rgba(255, 42, 75, 0.3);
+      position: relative;
     }
 
     h1 {
-      margin: 0 0 6px 0;
-      font-size: 1.6rem;
+      margin: 0 0 10px 0;
+      font-size: 2.5rem;
       letter-spacing: -0.5px;
-      background: linear-gradient(135deg, #fff 30%, var(--accent-red));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      color: var(--accent-yellow);
+      text-shadow: 0 3px 10px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 234, 0, 0.6);
     }
 
     h2 {
-      margin: 0 0 16px 0;
-      font-size: 1rem;
-      color: var(--text-dim);
+      margin: 0 0 25px 0;
+      font-size: 1.2rem;
+      color: #e0f7fc;
       font-weight: 500;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
     }
 
-    .radio-box-container {
-      width: 100%;
-      height: 110px;
-      border-radius: 12px;
-      overflow: hidden;
-      background: #10141c;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      margin-top: 10px;
+    /* Now Playing Display */
+    .now-playing-box {
+      background: rgba(0, 20, 40, 0.4);
+      padding: 18px 20px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      margin-bottom: 25px;
+      box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.3);
     }
 
-    .radio-box-container iframe {
-      width: 100%;
-      height: 110px;
-      border: none;
-      display: block;
-    }
-
-    .btn-main {
-      background: linear-gradient(135deg, #ff2a4b 0%, #c41230 100%);
-      color: white;
-      border: none;
-      padding: 14px 28px;
-      font-size: 15px;
+    .now-playing-title {
+      color: var(--accent-yellow);
       font-weight: 700;
-      border-radius: 30px;
+      font-size: 1.2rem;
+      margin: 0;
+      word-break: break-word;
+      text-shadow: 0 1px 5px rgba(0,0,0,0.5);
+    }
+
+    /* Glossy Frutiger Aero Yellow Button */
+    .btn-main {
+      background: linear-gradient(180deg, #fffb96 0%, #ffea00 50%, #ffaa00 51%, #e69500 100%);
+      color: var(--text-dark);
+      border: 2px solid #ffffff;
+      padding: 18px 40px;
+      font-size: 1.3rem;
+      font-weight: 800;
+      border-radius: 50px;
       cursor: pointer;
-      box-shadow: 0 4px 15px var(--accent-glow);
+      box-shadow: 0 8px 25px rgba(255, 170, 0, 0.5), 
+                  inset 0 2px 2px rgba(255, 255, 255, 0.9);
       transition: all 0.2s ease;
       width: 100%;
-      max-width: 260px;
+      max-width: 320px;
       margin-top: 5px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .btn-main:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(255, 234, 0, 0.7), 
+                  inset 0 2px 2px rgba(255, 255, 255, 1);
     }
 
     .btn-main:active {
@@ -107,38 +132,25 @@
     }
 
     .status-text {
-      font-size: 0.85rem;
-      color: var(--text-dim);
-      margin-top: 12px;
-      min-height: 20px;
-    }
-
-    .now-playing-box {
-      background: rgba(0, 0, 0, 0.3);
-      padding: 14px 16px;
-      border-radius: 14px;
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      margin-bottom: 16px;
-    }
-
-    .now-playing-title {
-      color: var(--accent-red);
-      font-weight: 600;
-      font-size: 0.95rem;
-      margin: 0;
-      word-break: break-word;
-    }
-
-    .disclaimer-footer {
-      margin-top: 30px;
-      padding: 16px 20px;
-      max-width: 460px;
-      font-size: 0.72rem;
-      line-height: 1.4;
+      font-size: 1rem;
       color: #ffffff;
-      opacity: 0.8;
+      margin-top: 15px;
+      min-height: 24px;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+      font-weight: 600;
+    }
+
+    /* Legal Disclaimer Footer */
+    .disclaimer-footer {
+      margin-top: 40px;
+      padding: 16px 20px;
+      max-width: 600px;
+      font-size: 0.75rem;
+      line-height: 1.4;
+      color: #d0e8f2;
+      opacity: 0.85;
       text-align: center;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
     }
   </style>
 </head>
@@ -146,16 +158,6 @@
 
   <div class="main-container">
     
-    <!-- RED 96.3 LIVE STATION -->
-    <div class="card">
-      <h1>🎸 Red 96.3 Live</h1>
-      <h2>📻 Αθήνα - Live Stream</h2>
-      
-      <div class="radio-box-container">
-        <iframe src="https://onlineradiobox.com/gr/red/player/?cs=gr.red&amp;mini=1" scrolling="no"></iframe>
-      </div>
-    </div>
-
     <!-- PLANET ROCK LIVE PLAYLIST -->
     <div class="card">
       <h1>🎧 Planet Rock Live</h1>
@@ -171,12 +173,14 @@
 
   </div>
 
+  <!-- LEGAL DISCLAIMER (Χωρίς καμία αναφορά στον Red 96.3) -->
   <footer class="disclaimer-footer">
     <strong>Legal Notice & Disclaimer:</strong><br>
-    This website is an independent fan project created for personal entertainment purposes only. It is not affiliated with, endorsed by, or connected to Red 96.3 FM Greece or Planet Rock UK. The name "Planet Rock" is used purely as a fan homage. All live radio streams are provided via third-party embedded widgets. All audio tracks, music recordings, logos, and trademarks belong exclusively to their respective owners, artists, and record labels. No copyright infringement is intended.
+    This website is an independent fan project created for personal entertainment purposes only. It is not affiliated with, endorsed by, or connected to Planet Rock UK. The name "Planet Rock" is used purely as a fan homage. All audio tracks, music recordings, logos, and trademarks belong exclusively to their respective owners, artists, and record labels. No copyright infringement is intended.
   </footer>
 
   <script>
+    // --- MP3 PLAYLIST AUDIO ---
     let mp3Audio = new Audio();
     let isPlaylistPlaying = false;
     const playlistBtn = document.getElementById('playlistBtn');
@@ -221,21 +225,28 @@
       mp3Audio.src = playlist[currentTrackIndex].file;
       nowPlaying.innerText = "🎵 " + playlist[currentTrackIndex].title;
       playlistStatus.innerText = "Έτοιμο";
-      if (autoPlay) playPlaylist();
+      if (autoPlay) {
+        playPlaylist();
+      }
     }
 
     function togglePlaylist() {
-      if (!isPlaylistPlaying) playPlaylist();
-      else pausePlaylist();
+      if (!isPlaylistPlaying) {
+        playPlaylist();
+      } else {
+        pausePlaylist();
+      }
     }
 
     function playPlaylist() {
       mp3Audio.play().then(() => {
         isPlaylistPlaying = true;
         playlistBtn.innerText = '⏸ PAUSE';
-        playlistBtn.style.background = 'linear-gradient(135deg, #444 0%, #222 100%)';
-        playlistStatus.innerText = "🎵 Παίζει τώρα";
+        playlistBtn.style.background = 'linear-gradient(180deg, #999 0%, #444 50%, #222 51%, #111 100%)';
+        playlistBtn.style.color = '#fff';
+        playlistStatus.innerText = "🎵 Παίζει τώρα...";
       }).catch(err => {
+        console.error(err);
         playlistStatus.innerText = "Σφάλμα αναπαραγωγής";
       });
     }
@@ -244,7 +255,8 @@
       mp3Audio.pause();
       isPlaylistPlaying = false;
       playlistBtn.innerText = '▶ PLAY';
-      playlistBtn.style.background = 'linear-gradient(135deg, #ff2a4b 0%, #c41230 100%)';
+      playlistBtn.style.background = 'linear-gradient(180deg, #fffb96 0%, #ffea00 50%, #ffaa00 51%, #e69500 100%)';
+      playlistBtn.style.color = 'var(--text-dark)';
       playlistStatus.innerText = "Σε παύση";
     }
 
@@ -253,7 +265,10 @@
       loadTrack(currentTrackIndex, true);
     }
 
-    mp3Audio.addEventListener('ended', nextTrack);
+    mp3Audio.addEventListener('ended', () => {
+      nextTrack();
+    });
+
     loadTrack(0, false);
   </script>
 
