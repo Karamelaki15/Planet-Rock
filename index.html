@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Planet Rock Live</title>
+  <title>Kara Planet Rock Live</title>
   <style>
     :root {
       --aero-yellow-glow: #ffee55;
@@ -96,7 +96,7 @@
 
     h1 {
       margin: 0 0 10px 0;
-      font-size: 2.5rem;
+      font-size: 2.3rem;
       letter-spacing: -0.5px;
       color: var(--aero-yellow-glow);
       text-shadow: 0 3px 12px rgba(0, 0, 0, 0.6), 0 0 25px rgba(255, 234, 0, 0.8);
@@ -104,7 +104,7 @@
 
     h2 {
       margin: 0 0 25px 0;
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       color: #fff6d0;
       font-weight: 500;
       text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
@@ -142,7 +142,7 @@
       box-shadow: 0 8px 30px rgba(255, 170, 0, 0.6), 
                   0 0 20px rgba(255, 230, 0, 0.4),
                   inset 0 2px 3px rgba(255, 255, 255, 1);
-      transition: all 0.25 ease;
+      transition: all 0.25s ease;
       width: 100%;
       max-width: 320px;
       margin-top: 5px;
@@ -188,13 +188,13 @@
 
   <div class="main-container">
     
-    <!-- PLANET ROCK LIVE PLAYLIST -->
+    <!-- KARA PLANET ROCK LIVE PLAYLIST -->
     <div class="card">
-      <h1>🎧 Planet Rock Live</h1>
+      <h1>🎧 Kara Planet Rock Live</h1>
       <h2>No. 1 Rock μουσική στον πλανήτη</h2>
       
       <div class="now-playing-box">
-        <p class="now-playing-title" id="nowPlaying">Φόρτωση λίστας...</p>
+        <p class="now-playing-title" id="nowPlaying">Έτοιμο για αναπαραγωγή</p>
       </div>
 
       <button class="btn-main" id="playlistBtn" onclick="togglePlaylist()">▶ PLAY</button>
@@ -205,7 +205,109 @@
 
   <footer class="disclaimer-footer">
     <strong>Legal Notice & Disclaimer:</strong><br>
-    This website is an independent fan project created for personal entertainment purposes only. It is not affiliated with, endorsed by, or connected to Planet Rock UK. The name "Planet Rock" is used purely as a fan homage. All audio tracks, music recordings, logos, and trademarks belong exclusively to their respective owners, artists, and record labels. No copyright infringement is intended.
+    This website is an independent fan project created for personal entertainment purposes only. It is not affiliated with, endorsed by, or connected to Planet Rock UK. The name "Kara Planet Rock" is used purely as a fan homage. All audio tracks, music recordings, logos, and trademarks belong exclusively to their respective owners, artists, and record labels. No copyright infringement is intended.
   </footer>
 
   <script>
+    // --- MP3 PLAYLIST AUDIO ---
+    let mp3Audio = new Audio();
+    let isPlaylistPlaying = false;
+    const playlistBtn = document.getElementById('playlistBtn');
+    const playlistStatus = document.getElementById('playlistStatus');
+    const nowPlaying = document.getElementById('nowPlaying');
+
+    const playlist = [
+      { title: "AC/DC - Back In Black", file: "AC DC - Back In Black (Official Video).mp3" },
+      { title: "AC/DC - Highway to Hell", file: "AC DC - Highway to Hell (Official Video).mp3" },
+      { title: "Bon Jovi - It's My Life", file: "Bon Jovi - It's My Life [Lyrics].mp3" },
+      { title: "Bon Jovi - Livin' On A Prayer", file: "Bon Jovi - Livin' On A Prayer.mp3" },
+      { title: "Bon Jovi - You Give Love A Bad Name", file: "Bon Jovi - You Give Love A Bad Name.mp3" },
+      { title: "Scorpions - Dynamite", file: "Dynamite (2015 - Remaster).mp3" },
+      { title: "Eagles - Hotel California", file: "Eagles - Hotel California Lyric Video Lirik Indo....mp3" },
+      { title: "Evanescence - Bring Me To Life", file: "Evanescence - Bring Me To Life (Official HD ....mp3" },
+      { title: "Guns N' Roses - Sweet Child O' Mine", file: "Guns N' Roses - Sweet Child O' Mine (Official ....mp3" },
+      { title: "Guns N' Roses - Welcome To The Jungle", file: "Guns N' Roses - Welcome To The Jungle.mp3" },
+      { title: "Linkin Park - In The End", file: "In The End [Official HD Music Video] - Linkin ....mp3" },
+      { title: "Kiss - I Was Made For Lovin' You", file: "Kiss - I Was Made For Lovin' You.mp3" },
+      { title: "Linkin Park - Numb", file: "Numb (Official Music Video) [4K UPGRADE] -....mp3" },
+      { title: "R.E.M. - Losing My Religion", file: "R.E.M. - Losing My Religion (Official HD Musi....mp3" },
+      { title: "Kiss - Rock And Roll All Nite", file: "Rock And Roll All Nite.mp3" },
+      { title: "Scorpions - Bad Boys Running Wild", file: "Scorpions - Bad Boys Running Wild (Visualize....mp3" },
+      { title: "Scorpions - Big City Nights", file: "Scorpions - Big City Nights (Official Video).mp3" },
+      { title: "Scorpions - In Trance", file: "Scorpions - In Trance.mp3" },
+      { title: "Scorpions - No One Like You", file: "Scorpions - No One Like You (Official Video).mp3" },
+      { title: "Scorpions - Send Me An Angel", file: "Scorpions - Send Me An Angel.mp3" },
+      { title: "Scorpions - The Zoo", file: "Scorpions - The Zoo (Visualizer).mp3" },
+      { title: "Scorpions - When The Smoke Is Going Down", file: "Scorpions - When The Smoke Is Going Down ....mp3" },
+      { title: "Scorpions - Wind Of Change", file: "Scorpions - Wind Of Change (Official Music V....mp3" },
+      { title: "Scorpions - Pictured Life", file: "Scorpions Pictured Life.mp3" },
+      { title: "Scorpions - Still Loving You", file: "Still Loving You - Scorpions [Remastered].mp3" },
+      { title: "Survivor - Eye Of The Tiger", file: "Survivor - Eye Of The Tiger (Official HD Video....mp3" },
+      { title: "The Beatles - Here Comes The Sun", file: "The Beatles - Here Comes The Sun (Lyrics).mp3" }
+    ];
+
+    let currentTrackIndex = 0;
+
+    function loadTrack(index, autoPlay = false) {
+      if (playlist.length === 0) return;
+      currentTrackIndex = index;
+      
+      // Ασφαλής φόρτωση ονομάτων αρχείων με ειδικούς χαρακτήρες
+      mp3Audio.src = encodeURIComponent(playlist[currentTrackIndex].file);
+      nowPlaying.innerText = "🎵 " + playlist[currentTrackIndex].title;
+      playlistStatus.innerText = "Έτοιμο";
+      
+      if (autoPlay) {
+        playPlaylist();
+      }
+    }
+
+    function togglePlaylist() {
+      if (!isPlaylistPlaying) {
+        playPlaylist();
+      } else {
+        pausePlaylist();
+      }
+    }
+
+    function playPlaylist() {
+      if (!mp3Audio.src || mp3Audio.src === "" || mp3Audio.src.endsWith("undefined")) {
+        loadTrack(0, false);
+      }
+      
+      mp3Audio.play().then(() => {
+        isPlaylistPlaying = true;
+        playlistBtn.innerText = '⏸ PAUSE';
+        playlistBtn.style.background = 'linear-gradient(180deg, #ffffff 0%, #666666 35%, #333333 65%, #111111 100%)';
+        playlistBtn.style.color = '#ffffff';
+        playlistStatus.innerText = "🎵 Παίζει τώρα...";
+      }).catch(err => {
+        console.error("Audio error:", err);
+        playlistStatus.innerText = "Σφάλμα αναπαραγωγής";
+      });
+    }
+
+    function pausePlaylist() {
+      mp3Audio.pause();
+      isPlaylistPlaying = false;
+      playlistBtn.innerText = '▶ PLAY';
+      playlistBtn.style.background = 'linear-gradient(180deg, #ffffff 0%, #ffea00 35%, #ff9900 65%, #cc6600 100%)';
+      playlistBtn.style.color = 'var(--text-dark)';
+      playlistStatus.innerText = "Σε παύση";
+    }
+
+    function nextTrack() {
+      currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
+      loadTrack(currentTrackIndex, true);
+    }
+
+    mp3Audio.addEventListener('ended', () => {
+      nextTrack();
+    });
+
+    // Αρχική φόρτωση του πρώτου τραγουδιού
+    loadTrack(0, false);
+  </script>
+
+</body>
+</html>
