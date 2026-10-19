@@ -82,7 +82,7 @@
       transition: all 0.2s ease;
       width: 100%;
       max-width: 260px;
-      margin-top: 5px;
+      margin-top: 10px;
     }
 
     .btn-main:active {
@@ -135,7 +135,7 @@
       <h1>🎸 Red 96.3 Live</h1>
       <h2>📻 Αθήνα - Live Stream</h2>
       
-      <button class="btn-main" id="redBtn" onclick="toggleRedRadio()">▶ LIVE RADIO</button>
+      <button class="btn-main" id="redBtn" onclick="toggleRedRadio()">▶ LIVE STREAM</button>
       <div class="status-text" id="redStatus">Έτοιμο για αναπαραγωγή</div>
     </div>
 
@@ -161,20 +161,19 @@
   </footer>
 
   <script>
-    // --- RED 96.3 AUDIO STREAM ---
+    // --- RED 96.3 LIVE STREAM ---
     let redAudio = new Audio("https://stream.radiojar.com/red963.mp3");
     let isRedPlaying = false;
     const redBtn = document.getElementById('redBtn');
     const redStatus = document.getElementById('redStatus');
 
     function toggleRedRadio() {
-      // Αν παίζει η playlist του Planet Rock, τη σταματάμε πρώτα
+      // Αν παίζει η MP3 playlist, τη σταματάμε πρώτα
       if (isPlaylistPlaying) {
         pausePlaylist();
       }
 
       if (!isRedPlaying) {
-        // Ξαναφορτώνουμε το stream για να πιάσουμε το 'live' σημείο
         redAudio.src = "https://stream.radiojar.com/red963.mp3";
         redAudio.play().then(() => {
           isRedPlaying = true;
@@ -188,7 +187,7 @@
       } else {
         redAudio.pause();
         isRedPlaying = false;
-        redBtn.innerText = '▶ LIVE RADIO';
+        redBtn.innerText = '▶ LIVE STREAM';
         redBtn.style.background = 'linear-gradient(135deg, #ff2a4b 0%, #c41230 100%)';
         redStatus.innerText = "Σε παύση";
       }
@@ -247,7 +246,11 @@
     function togglePlaylist() {
       // Αν παίζει ο Red 96.3, τον σταματάμε πρώτα
       if (isRedPlaying) {
-        toggleRedRadio();
+        redAudio.pause();
+        isRedPlaying = false;
+        redBtn.innerText = '▶ LIVE STREAM';
+        redBtn.style.background = 'linear-gradient(135deg, #ff2a4b 0%, #c41230 100%)';
+        redStatus.innerText = "Σε παύση";
       }
 
       if (!isPlaylistPlaying) {
