@@ -5,82 +5,141 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Planet Rock Radio</title>
   <style>
+    :root {
+      --bg-color: #0b0c10;
+      --card-bg: rgba(255, 255, 255, 0.04);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --accent-red: #ff2a4b;
+      --accent-glow: rgba(255, 42, 75, 0.4);
+      --text-main: #f0f0f0;
+      --text-dim: #a0a0a0;
+    }
+
     body {
-      background-color: #121212;
-      color: #ffffff;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: radial-gradient(circle at top, #1a0810 0%, var(--bg-color) 70%);
+      color: var(--text-main);
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
       display: flex;
       flex-direction: column;
       align-items: center;
       min-height: 100vh;
       margin: 0;
-      padding: 20px;
+      padding: 24px 16px;
       box-sizing: border-box;
     }
 
     .main-container {
       width: 100%;
-      max-width: 500px;
+      max-width: 460px;
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 24px;
     }
 
     .card {
-      background: #181818;
-      padding: 20px;
-      border-radius: 16px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--card-border);
+      padding: 24px 20px;
+      border-radius: 20px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
       text-align: center;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .card:hover {
+      border-color: rgba(255, 42, 75, 0.3);
     }
 
     h1 {
-      margin-top: 0;
-      color: #ff3b30;
-      font-size: 1.8rem;
+      margin: 0 0 6px 0;
+      font-size: 1.6rem;
+      letter-spacing: -0.5px;
+      background: linear-gradient(135deg, #fff 30%, var(--accent-red));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
     h2 {
-      margin-top: 0;
-      font-size: 1.2rem;
-      color: #ddd;
+      margin: 0 0 16px 0;
+      font-size: 1rem;
+      color: var(--text-dim);
+      font-weight: 500;
     }
 
-    .secondary-btn {
-      background-color: #333;
+    .btn-main {
+      background: linear-gradient(135deg, #ff2a4b 0%, #c41230 100%);
       color: white;
       border: none;
-      padding: 10px 18px;
-      font-size: 14px;
-      border-radius: 20px;
+      padding: 14px 28px;
+      font-size: 15px;
+      font-weight: 700;
+      border-radius: 30px;
       cursor: pointer;
-      margin: 5px;
-      transition: background 0.2s;
+      box-shadow: 0 4px 15px var(--accent-glow);
+      transition: all 0.2s ease;
+      width: 100%;
+      max-width: 260px;
     }
 
-    .secondary-btn:hover {
-      background-color: #444;
+    .btn-main:active {
+      transform: scale(0.97);
+    }
+
+    .status-text {
+      font-size: 0.85rem;
+      color: var(--text-dim);
+      margin-top: 12px;
+      min-height: 20px;
+    }
+
+    .now-playing-box {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 12px 16px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      margin-bottom: 16px;
+    }
+
+    .now-playing-title {
+      color: var(--accent-red);
+      font-weight: 600;
+      font-size: 0.95rem;
+      margin: 0;
+      word-break: break-word;
     }
 
     audio {
       width: 100%;
-      margin-top: 15px;
+      height: 40px;
+      border-radius: 20px;
+      outline: none;
     }
 
-    .radio-frame {
-      width: 100%;
-      height: 110px;
-      border: none;
-      border-radius: 12px;
-      background: transparent;
-      margin-top: 10px;
-    }
-
-    .playlist-controls {
+    .controls-row {
       display: flex;
       justify-content: center;
-      gap: 10px;
-      margin-top: 10px;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-main);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 10px 20px;
+      font-size: 13px;
+      font-weight: 600;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      flex: 1;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.2);
     }
   </style>
 </head>
@@ -88,32 +147,68 @@
 
   <div class="main-container">
     
-    <!-- Red 96.3 Live Radio (Official Radiojar Player) -->
+    <!-- RED 96.3 LIVE STATION -->
     <div class="card">
       <h1>🎸 Red 96.3 Live</h1>
-      <h2>📻 Red 96.3 (Athens Live)</h2>
-      <iframe class="radio-frame" src="https://www.radiojar.com/application/stations/player/?mount=red963" scrolling="no"></iframe>
+      <h2>📻 Αθήνα - Live Stream</h2>
+      <button class="btn-main" id="radioBtn" onclick="toggleRadio()">▶ LIVE RADIO</button>
+      <div class="status-text" id="radioStatus">Πατήστε Play για ζωντανή μετάδοση</div>
     </div>
 
-    <!-- Personal MP3 Rock Playlist -->
+    <!-- PLANET ROCK LIVE PLAYLIST -->
     <div class="card">
-      <h2>🎧 Planet Rock Live</h2>
-      <p id="nowPlaying" style="color: #ff3b30; font-weight: bold; min-height: 40px;">Φόρτωση λίστας...</p>
+      <h1>🎧 Planet Rock Live</h1>
+      <h2>Η προσωπική σου Rock συλλογή</h2>
       
+      <div class="now-playing-box">
+        <p class="now-playing-title" id="nowPlaying">Φόρτωση λίστας...</p>
+      </div>
+
       <audio id="mp3Player" controls controlsList="nodownload"></audio>
 
-      <div class="playlist-controls">
-        <button class="secondary-btn" onclick="prevTrack()">⏮ Προηγούμενο</button>
-        <button class="secondary-btn" onclick="nextTrack()">Επόμενο ⏭</button>
+      <div class="controls-row">
+        <button class="btn-secondary" onclick="prevTrack()">⏮ Προηγούμενο</button>
+        <button class="btn-secondary" onclick="nextTrack()">Επόμενο ⏭</button>
       </div>
     </div>
 
   </div>
 
   <script>
+    // --- RED 96.3 AUDIO CONTROLLER ---
+    let liveAudio = new Audio('https://stream.radiojar.com/red963.mp3');
+    let isRadioPlaying = false;
+    const radioBtn = document.getElementById('radioBtn');
+    const radioStatus = document.getElementById('radioStatus');
     const mp3Player = document.getElementById('mp3Player');
 
-    // --- MP3 PLAYLIST (Από την τελική εικόνα σου) ---
+    function toggleRadio() {
+      if (!mp3Player.paused) {
+        mp3Player.pause();
+      }
+
+      if (!isRadioPlaying) {
+        radioStatus.innerText = "Σύνδεση με Red 96.3...";
+        liveAudio.load();
+        liveAudio.play().then(() => {
+          isRadioPlaying = true;
+          radioBtn.innerText = '⏸ PAUSE RADIO';
+          radioBtn.style.background = 'linear-gradient(135deg, #444 0%, #222 100%)';
+          radioStatus.innerText = "🔴 Ζωντανή μετάδοση Red 96.3";
+        }).catch(err => {
+          console.error(err);
+          radioStatus.innerText = "Σφάλμα σύνδεσης. Πατήστε ξανά Play.";
+        });
+      } else {
+        liveAudio.pause();
+        isRadioPlaying = false;
+        radioBtn.innerText = '▶ LIVE RADIO';
+        radioBtn.style.background = 'linear-gradient(135deg, #ff2a4b 0%, #c41230 100%)';
+        radioStatus.innerText = "Παύση μετάδοσης";
+      }
+    }
+
+    // --- PLANET ROCK PLAYLIST ---
     const playlist = [
       { title: "AC/DC - Back In Black", file: "AC DC - Back In Black (Official Video).mp3" },
       { title: "AC/DC - Highway to Hell", file: "AC DC - Highway to Hell (Official Video).mp3" },
@@ -169,6 +264,16 @@
 
     mp3Player.addEventListener('ended', () => {
       nextTrack();
+    });
+
+    mp3Player.addEventListener('play', () => {
+      if (isRadioPlaying) {
+        liveAudio.pause();
+        isRadioPlaying = false;
+        radioBtn.innerText = '▶ LIVE RADIO';
+        radioBtn.style.background = 'linear-gradient(135deg, #ff2a4b 0%, #c41230 100%)';
+        radioStatus.innerText = "";
+      }
     });
 
     loadTrack(0);
