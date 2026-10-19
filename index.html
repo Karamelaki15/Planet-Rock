@@ -69,11 +69,11 @@
       font-weight: 500;
     }
 
-    /* Σωστό container για το Online Radio Box iframe */
+    /* Ακριβές ύψος 65px για το τέλειο mini player του Online Radio Box */
     .radio-box-container {
       width: 100%;
-      height: 80px;
-      border-radius: 14px;
+      height: 65px;
+      border-radius: 12px;
       overflow: hidden;
       background: #10141c;
       border: 1px solid rgba(255, 255, 255, 0.08);
@@ -82,7 +82,7 @@
 
     .radio-box-container iframe {
       width: 100%;
-      height: 80px;
+      height: 65px;
       border: none;
       display: block;
     }
@@ -148,12 +148,13 @@
 
   <div class="main-container">
     
-    <!-- RED 96.3 LIVE STATION (Online Radio Box Widget) -->
+    <!-- RED 96.3 LIVE STATION -->
     <div class="card">
       <h1>🎸 Red 96.3 Live</h1>
       <h2>📻 Αθήνα - Live Stream</h2>
       
       <div class="radio-box-container">
+        <!-- Online Radio Box Mini Player -->
         <iframe src="https://onlineradiobox.com/gr/red/player/?cs=gr.red&amp;mini=1" scrolling="no"></iframe>
       </div>
     </div>
