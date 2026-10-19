@@ -45,7 +45,7 @@
       border-radius: 20px;
       box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
       text-align: center;
-      transition: transform 0.2s ease, border-color 0.2s ease;
+      transition: border-color 0.2s ease;
     }
 
     .card:hover {
@@ -81,6 +81,7 @@
       transition: all 0.2s ease;
       width: 100%;
       max-width: 260px;
+      margin-top: 5px;
     }
 
     .btn-main:active {
@@ -96,8 +97,8 @@
 
     .now-playing-box {
       background: rgba(0, 0, 0, 0.3);
-      padding: 12px 16px;
-      border-radius: 12px;
+      padding: 14px 16px;
+      border-radius: 14px;
       border: 1px solid rgba(255, 255, 255, 0.05);
       margin-bottom: 16px;
     }
@@ -110,25 +111,18 @@
       word-break: break-word;
     }
 
-    audio {
-      width: 100%;
-      height: 40px;
-      border-radius: 20px;
-      outline: none;
-    }
-
     .controls-row {
       display: flex;
       justify-content: center;
-      gap: 12px;
-      margin-top: 16px;
+      gap: 10px;
+      margin-top: 12px;
     }
 
     .btn-secondary {
       background: rgba(255, 255, 255, 0.08);
       color: var(--text-main);
       border: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 10px 20px;
+      padding: 10px 16px;
       font-size: 13px;
       font-weight: 600;
       border-radius: 20px;
@@ -155,7 +149,7 @@
       <div class="status-text" id="radioStatus">Πατήστε Play για ζωντανή μετάδοση</div>
     </div>
 
-    <!-- PLANET ROCK LIVE PLAYLIST -->
+    <!-- PLANET ROCK LIVE PLAYLIST (Χωρίς άσπρα κουτιά, καθαρό dark UI) -->
     <div class="card">
       <h1>🎧 Planet Rock Live</h1>
       <h2>Η προσωπική σου Rock συλλογή</h2>
@@ -164,7 +158,8 @@
         <p class="now-playing-title" id="nowPlaying">Φόρτωση λίστας...</p>
       </div>
 
-      <audio id="mp3Player" controls controlsList="nodownload"></audio>
+      <button class="btn-main" id="playlistBtn" onclick="togglePlaylist()">▶ PLAY</button>
+      <div class="status-text" id="playlistStatus">Ετοιμο για αναπαραγωγή</div>
 
       <div class="controls-row">
         <button class="btn-secondary" onclick="prevTrack()">⏮ Προηγούμενο</button>
@@ -175,40 +170,19 @@
   </div>
 
   <script>
-    // --- RED 96.3 AUDIO CONTROLLER ---
-    let liveAudio = new Audio('https://www.redfm.gr/player/');
+    // --- RED 96.3 AUDIO ---
+    let liveAudio = new Audio('https://live.live24.gr/red963');
     let isRadioPlaying = false;
     const radioBtn = document.getElementById('radioBtn');
     const radioStatus = document.getElementById('radioStatus');
-    const mp3Player = document.getElementById('mp3Player');
 
-    function toggleRadio() {
-      if (!mp3Player.paused) {
-        mp3Player.pause();
-      }
+    // --- MP3 PLAYLIST AUDIO ---
+    let mp3Audio = new Audio();
+    let isPlaylistPlaying = false;
+    const playlistBtn = document.getElementById('playlistBtn');
+    const playlistStatus = document.getElementById('playlistStatus');
+    const nowPlaying = document.getElementById('nowPlaying');
 
-      if (!isRadioPlaying) {
-        radioStatus.innerText = "Σύνδεση με Red 96.3...";
-        liveAudio.load();
-        liveAudio.play().then(() => {
-          isRadioPlaying = true;
-          radioBtn.innerText = '⏸ PAUSE RADIO';
-          radioBtn.style.background = 'linear-gradient(135deg, #444 0%, #222 100%)';
-          radioStatus.innerText = "🔴 Ζωντανή μετάδοση Red 96.3";
-        }).catch(err => {
-          console.error(err);
-          radioStatus.innerText = "Σφάλμα σύνδεσης. Πατήστε ξανά Play.";
-        });
-      } else {
-        liveAudio.pause();
-        isRadioPlaying = false;
-        radioBtn.innerText = '▶ LIVE RADIO';
-        radioBtn.style.background = 'linear-gradient(135deg, #ff2a4b 0%, #c41230 100%)';
-        radioStatus.innerText = "Παύση μετάδοσης";
-      }
-    }
-
-    // --- PLANET ROCK PLAYLIST ---
     const playlist = [
       { title: "AC/DC - Back In Black", file: "AC DC - Back In Black (Official Video).mp3" },
       { title: "AC/DC - Highway to Hell", file: "AC DC - Highway to Hell (Official Video).mp3" },
@@ -240,43 +214,96 @@
     ];
 
     let currentTrackIndex = 0;
-    const nowPlaying = document.getElementById('nowPlaying');
 
-    function loadTrack(index) {
+    function loadTrack(index, autoPlay = false) {
       if (playlist.length === 0) return;
       currentTrackIndex = index;
-      mp3Player.src = playlist[currentTrackIndex].file;
+      mp3Audio.src = playlist[currentTrackIndex].file;
       nowPlaying.innerText = "🎵 " + playlist[currentTrackIndex].title;
-      mp3Player.load();
+      playlistStatus.innerText = "Έτοιμο";
+      if (autoPlay) {
+        playPlaylist();
+      }
     }
 
-    function nextTrack() {
-      currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
-      loadTrack(currentTrackIndex);
-      mp3Player.play();
+    function toggleRadio() {
+      if (isPlaylistPlaying) {
+        pausePlaylist();
+      }
+
+      if (!isRadioPlaying) {
+        radioStatus.innerText = "Σύνδεση...";
+        liveAudio.load();
+        liveAudio.play().then(() => {
+          isRadioPlaying = true;
+          radioBtn.innerText = '⏸ PAUSE RADIO';
+          radioBtn.style.background = 'linear-gradient(135deg, #444 0%, #222 100%)';
+          radioStatus.innerText = "🔴 Ζωντανά Red 96.3";
+        }).catch(err => {
+          console.error(err);
+          radioStatus.innerText = "Σφάλμα σύνδεσης.";
+        });
+      } else {
+        liveAudio.pause();
+        isRadioPlaying = false;
+        radioBtn.innerText = '▶ LIVE RADIO';
+        radioBtn.style.background = 'linear-gradient(135deg, #ff2a4b 0%, #c41230 100%)';
+        radioStatus.innerText = "Παύση";
+      }
     }
 
-    function prevTrack() {
-      currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
-      loadTrack(currentTrackIndex);
-      mp3Player.play();
-    }
-
-    mp3Player.addEventListener('ended', () => {
-      nextTrack();
-    });
-
-    mp3Player.addEventListener('play', () => {
+    function togglePlaylist() {
       if (isRadioPlaying) {
         liveAudio.pause();
         isRadioPlaying = false;
         radioBtn.innerText = '▶ LIVE RADIO';
         radioBtn.style.background = 'linear-gradient(135deg, #ff2a4b 0%, #c41230 100%)';
-        radioStatus.innerText = "";
+        radioStatus.innerText = "Παύση";
       }
+
+      if (!isPlaylistPlaying) {
+        playPlaylist();
+      } else {
+        pausePlaylist();
+      }
+    }
+
+    function playPlaylist() {
+      mp3Audio.play().then(() => {
+        isPlaylistPlaying = true;
+        playlistBtn.innerText = '⏸ PAUSE';
+        playlistBtn.style.background = 'linear-gradient(135deg, #444 0%, #222 100%)';
+        playlistStatus.innerText = "🎵 Παίζει τώρα";
+      }).catch(err => {
+        console.error(err);
+        playlistStatus.innerText = "Σφάλμα αναπαραγωγής";
+      });
+    }
+
+    function pausePlaylist() {
+      mp3Audio.pause();
+      isPlaylistPlaying = false;
+      playlistBtn.innerText = '▶ PLAY';
+      playlistBtn.style.background = 'linear-gradient(135deg, #ff2a4b 0%, #c41230 100%)';
+      playlistStatus.innerText = "Σε παύση";
+    }
+
+    function nextTrack() {
+      currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
+      loadTrack(currentTrackIndex, true);
+    }
+
+    function prevTrack() {
+      currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
+      loadTrack(currentTrackIndex, true);
+    }
+
+    mp3Audio.addEventListener('ended', () => {
+      nextTrack();
     });
 
-    loadTrack(0);
+    // Αρχική φόρτωση πρώτου κομματιού
+    loadTrack(0, false);
   </script>
 
 </body>
