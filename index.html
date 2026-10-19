@@ -69,22 +69,19 @@
       font-weight: 500;
     }
 
-    /* Ακριβές ύψος 65px για το τέλειο mini player του Online Radio Box */
     .radio-box-container {
       width: 100%;
-      height: 65px;
-      border-radius: 12px;
+      min-height: 120px;
+      border-radius: 14px;
       overflow: hidden;
       background: #10141c;
       border: 1px solid rgba(255, 255, 255, 0.08);
       margin-top: 10px;
-    }
-
-    .radio-box-container iframe {
-      width: 100%;
-      height: 65px;
-      border: none;
-      display: block;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 10px;
+      box-sizing: border-box;
     }
 
     .btn-main {
@@ -130,7 +127,6 @@
       word-break: break-word;
     }
 
-    /* Legal Disclaimer Footer */
     .disclaimer-footer {
       margin-top: 30px;
       padding: 16px 20px;
@@ -154,8 +150,11 @@
       <h2>📻 Αθήνα - Live Stream</h2>
       
       <div class="radio-box-container">
-        <!-- Online Radio Box Mini Player -->
-        <iframe src="https://onlineradiobox.com/gr/red/player/?cs=gr.red&amp;mini=1" scrolling="no"></iframe>
+        <!-- Επίσημο Script Widget Online Radio Box -->
+        <script src="//onlineradiobox.com/js/pwidget.min.js" async></script>
+        <div class="orb-widget" data-station="gr.red" data-type="mini" data-theme="dark">
+          <a href="https://onlineradiobox.com/gr/red/">Red 96.3</a>
+        </div>
       </div>
     </div>
 
@@ -174,14 +173,12 @@
 
   </div>
 
-  <!-- LEGAL DISCLAIMER -->
   <footer class="disclaimer-footer">
     <strong>Legal Notice & Disclaimer:</strong><br>
     This website is an independent fan project created for personal entertainment purposes only. It is not affiliated with, endorsed by, or connected to Red 96.3 FM Greece or Planet Rock UK. The name "Planet Rock" is used purely as a fan homage. All live radio streams are provided via third-party embedded widgets. All audio tracks, music recordings, logos, and trademarks belong exclusively to their respective owners, artists, and record labels. No copyright infringement is intended.
   </footer>
 
   <script>
-    // --- MP3 PLAYLIST AUDIO ---
     let mp3Audio = new Audio();
     let isPlaylistPlaying = false;
     const playlistBtn = document.getElementById('playlistBtn');
@@ -226,17 +223,12 @@
       mp3Audio.src = playlist[currentTrackIndex].file;
       nowPlaying.innerText = "🎵 " + playlist[currentTrackIndex].title;
       playlistStatus.innerText = "Έτοιμο";
-      if (autoPlay) {
-        playPlaylist();
-      }
+      if (autoPlay) playPlaylist();
     }
 
     function togglePlaylist() {
-      if (!isPlaylistPlaying) {
-        playPlaylist();
-      } else {
-        pausePlaylist();
-      }
+      if (!isPlaylistPlaying) playPlaylist();
+      else pausePlaylist();
     }
 
     function playPlaylist() {
@@ -246,7 +238,6 @@
         playlistBtn.style.background = 'linear-gradient(135deg, #444 0%, #222 100%)';
         playlistStatus.innerText = "🎵 Παίζει τώρα";
       }).catch(err => {
-        console.error(err);
         playlistStatus.innerText = "Σφάλμα αναπαραγωγής";
       });
     }
@@ -264,10 +255,7 @@
       loadTrack(currentTrackIndex, true);
     }
 
-    mp3Audio.addEventListener('ended', () => {
-      nextTrack();
-    });
-
+    mp3Audio.addEventListener('ended', nextTrack);
     loadTrack(0, false);
   </script>
 
