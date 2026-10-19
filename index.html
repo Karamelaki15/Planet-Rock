@@ -69,6 +69,24 @@
       font-weight: 500;
     }
 
+    /* Σωστό container για το Online Radio Box iframe */
+    .radio-box-container {
+      width: 100%;
+      height: 80px;
+      border-radius: 14px;
+      overflow: hidden;
+      background: #10141c;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      margin-top: 10px;
+    }
+
+    .radio-box-container iframe {
+      width: 100%;
+      height: 80px;
+      border: none;
+      display: block;
+    }
+
     .btn-main {
       background: linear-gradient(135deg, #ff2a4b 0%, #c41230 100%);
       color: white;
@@ -82,7 +100,7 @@
       transition: all 0.2s ease;
       width: 100%;
       max-width: 260px;
-      margin-top: 10px;
+      margin-top: 5px;
     }
 
     .btn-main:active {
@@ -130,13 +148,14 @@
 
   <div class="main-container">
     
-    <!-- RED 96.3 LIVE STATION -->
+    <!-- RED 96.3 LIVE STATION (Online Radio Box Widget) -->
     <div class="card">
       <h1>🎸 Red 96.3 Live</h1>
       <h2>📻 Αθήνα - Live Stream</h2>
       
-      <button class="btn-main" id="redBtn" onclick="toggleRedRadio()">▶ LIVE STREAM</button>
-      <div class="status-text" id="redStatus">Έτοιμο για αναπαραγωγή</div>
+      <div class="radio-box-container">
+        <iframe src="https://onlineradiobox.com/gr/red/player/?cs=gr.red&amp;mini=1" scrolling="no"></iframe>
+      </div>
     </div>
 
     <!-- PLANET ROCK LIVE PLAYLIST -->
@@ -157,42 +176,10 @@
   <!-- LEGAL DISCLAIMER -->
   <footer class="disclaimer-footer">
     <strong>Legal Notice & Disclaimer:</strong><br>
-    This website is an independent fan project created for personal entertainment purposes only. It is not affiliated with, endorsed by, or connected to Red 96.3 FM Greece or Planet Rock UK. The name "Planet Rock" is used purely as a fan homage. All live radio streams are provided via public stream URLs or embedded widgets. All audio tracks, music recordings, logos, and trademarks belong exclusively to their respective owners, artists, and record labels. No copyright infringement is intended.
+    This website is an independent fan project created for personal entertainment purposes only. It is not affiliated with, endorsed by, or connected to Red 96.3 FM Greece or Planet Rock UK. The name "Planet Rock" is used purely as a fan homage. All live radio streams are provided via third-party embedded widgets. All audio tracks, music recordings, logos, and trademarks belong exclusively to their respective owners, artists, and record labels. No copyright infringement is intended.
   </footer>
 
   <script>
-    // --- RED 96.3 LIVE STREAM ---
-    let redAudio = new Audio("https://stream.radiojar.com/red963.mp3");
-    let isRedPlaying = false;
-    const redBtn = document.getElementById('redBtn');
-    const redStatus = document.getElementById('redStatus');
-
-    function toggleRedRadio() {
-      // Αν παίζει η MP3 playlist, τη σταματάμε πρώτα
-      if (isPlaylistPlaying) {
-        pausePlaylist();
-      }
-
-      if (!isRedPlaying) {
-        redAudio.src = "https://stream.radiojar.com/red963.mp3";
-        redAudio.play().then(() => {
-          isRedPlaying = true;
-          redBtn.innerText = '⏸ PAUSE';
-          redBtn.style.background = 'linear-gradient(135deg, #444 0%, #222 100%)';
-          redStatus.innerText = "🔴 Live Αναμετάδοση...";
-        }).catch(err => {
-          console.error(err);
-          redStatus.innerText = "Σφάλμα σύνδεσης. Δοκιμάστε ξανά.";
-        });
-      } else {
-        redAudio.pause();
-        isRedPlaying = false;
-        redBtn.innerText = '▶ LIVE STREAM';
-        redBtn.style.background = 'linear-gradient(135deg, #ff2a4b 0%, #c41230 100%)';
-        redStatus.innerText = "Σε παύση";
-      }
-    }
-
     // --- MP3 PLAYLIST AUDIO ---
     let mp3Audio = new Audio();
     let isPlaylistPlaying = false;
@@ -244,15 +231,6 @@
     }
 
     function togglePlaylist() {
-      // Αν παίζει ο Red 96.3, τον σταματάμε πρώτα
-      if (isRedPlaying) {
-        redAudio.pause();
-        isRedPlaying = false;
-        redBtn.innerText = '▶ LIVE STREAM';
-        redBtn.style.background = 'linear-gradient(135deg, #ff2a4b 0%, #c41230 100%)';
-        redStatus.innerText = "Σε παύση";
-      }
-
       if (!isPlaylistPlaying) {
         playPlaylist();
       } else {
