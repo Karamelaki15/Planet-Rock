@@ -67,6 +67,15 @@
       margin-top: 15px;
     }
 
+    .radio-frame {
+      width: 100%;
+      height: 110px;
+      border: none;
+      border-radius: 12px;
+      background: transparent;
+      margin-top: 10px;
+    }
+
     .playlist-controls {
       display: flex;
       justify-content: center;
@@ -79,19 +88,16 @@
 
   <div class="main-container">
     
-    <!-- Red 96.3 Live Radio -->
+    <!-- Red 96.3 Live Radio (Official Radiojar Player) -->
     <div class="card">
-      <h1>🎸 Planet Rock Live</h1>
+      <h1>🎸 Red 96.3 Live</h1>
       <h2>📻 Red 96.3 (Athens Live)</h2>
-      <audio id="radioPlayer" controls preload="none">
-        <source src="https://live.live24.gr/red963" type="audio/mpeg">
-        Ο browser σου δεν υποστηρίζει live audio.
-      </audio>
+      <iframe class="radio-frame" src="https://www.radiojar.com/application/stations/player/?mount=red963" scrolling="no"></iframe>
     </div>
 
     <!-- Personal MP3 Rock Playlist -->
     <div class="card">
-      <h2>🎧 Η Rock Playlist μου</h2>
+      <h2>🎧 Planet Rock Live</h2>
       <p id="nowPlaying" style="color: #ff3b30; font-weight: bold; min-height: 40px;">Φόρτωση λίστας...</p>
       
       <audio id="mp3Player" controls controlsList="nodownload"></audio>
@@ -105,9 +111,9 @@
   </div>
 
   <script>
-    const radioPlayer = document.getElementById('radioPlayer');
     const mp3Player = document.getElementById('mp3Player');
 
+    // --- MP3 PLAYLIST (Από την τελική εικόνα σου) ---
     const playlist = [
       { title: "AC/DC - Back In Black", file: "AC DC - Back In Black (Official Video).mp3" },
       { title: "AC/DC - Highway to Hell", file: "AC DC - Highway to Hell (Official Video).mp3" },
@@ -163,18 +169,6 @@
 
     mp3Player.addEventListener('ended', () => {
       nextTrack();
-    });
-
-    mp3Player.addEventListener('play', () => {
-      if (!radioPlayer.paused) {
-        radioPlayer.pause();
-      }
-    });
-
-    radioPlayer.addEventListener('play', () => {
-      if (!mp3Player.paused) {
-        mp3Player.pause();
-      }
     });
 
     loadTrack(0);
