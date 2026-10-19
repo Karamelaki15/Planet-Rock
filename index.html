@@ -81,7 +81,7 @@
 
     .radio-box-container iframe {
       width: 100%;
-      height: 65px;
+      height: 130px;
       border: none;
       display: block;
     }
@@ -129,32 +129,7 @@
       word-break: break-word;
     }
 
-    .controls-row {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      margin-top: 12px;
-    }
-
-    .btn-secondary {
-      background: rgba(255, 255, 255, 0.08);
-      color: var(--text-main);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 10px 16px;
-      font-size: 13px;
-      font-weight: 600;
-      border-radius: 20px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      flex: 1;
-    }
-
-    .btn-secondary:hover {
-      background: rgba(255, 255, 255, 0.15);
-      border-color: rgba(255, 255, 255, 0.2);
-    }
-
-    /* Disclaimer Footer */
+    /* Legal Disclaimer Footer */
     .disclaimer-footer {
       margin-top: 30px;
       padding: 16px 20px;
@@ -178,7 +153,7 @@
       <h2>📻 Αθήνα - Live Stream</h2>
       
       <div class="radio-box-container">
-        <!-- Online Radio Box Mini Player -->
+        <!-- Online Radio Box Player -->
         <iframe src="https://onlineradiobox.com/gr/red/player/?cs=gr.red&amp;mini=1" scrolling="no"></iframe>
       </div>
     </div>
@@ -194,11 +169,6 @@
 
       <button class="btn-main" id="playlistBtn" onclick="togglePlaylist()">▶ PLAY</button>
       <div class="status-text" id="playlistStatus">Έτοιμο</div>
-
-      <div class="controls-row">
-        <button class="btn-secondary" onclick="prevTrack()">⏮ Προηγούμενο</button>
-        <button class="btn-secondary" onclick="nextTrack()">Επόμενο ⏭</button>
-      </div>
     </div>
 
   </div>
@@ -293,16 +263,10 @@
       loadTrack(currentTrackIndex, true);
     }
 
-    function prevTrack() {
-      currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
-      loadTrack(currentTrackIndex, true);
-    }
-
     mp3Audio.addEventListener('ended', () => {
       nextTrack();
     });
 
-    // Αρχικοποίηση πρώτου κομματιού
     loadTrack(0, false);
   </script>
 
