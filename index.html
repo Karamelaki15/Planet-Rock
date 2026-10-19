@@ -46,6 +46,7 @@
       box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
       text-align: center;
       transition: border-color 0.2s ease;
+      overflow: hidden;
     }
 
     .card:hover {
@@ -68,21 +69,22 @@
       font-weight: 500;
     }
 
-    .radio-iframe-container {
-      position: relative;
+    /* Styling για το Widget του Online Radio Box */
+    .radio-box-container {
       width: 100%;
-      height: 110px;
-      border-radius: 12px;
+      border-radius: 14px;
       overflow: hidden;
-      background: rgba(0, 0, 0, 0.4);
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      margin-top: 5px;
+      background: #10141c;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.8);
+      margin-top: 10px;
     }
 
-    .radio-iframe-container iframe {
+    .radio-box-container iframe {
       width: 100%;
-      height: 100%;
+      height: 130px;
       border: none;
+      display: block;
     }
 
     .btn-main {
@@ -128,29 +130,17 @@
       word-break: break-word;
     }
 
-    .controls-row {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      margin-top: 12px;
-    }
-
-    .btn-secondary {
-      background: rgba(255, 255, 255, 0.08);
-      color: var(--text-main);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 10px 16px;
-      font-size: 13px;
-      font-weight: 600;
-      border-radius: 20px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      flex: 1;
-    }
-
-    .btn-secondary:hover {
-      background: rgba(255, 255, 255, 0.15);
-      border-color: rgba(255, 255, 255, 0.2);
+    /* Legal Disclaimer */
+    .disclaimer-footer {
+      margin-top: 30px;
+      padding: 16px 20px;
+      max-width: 460px;
+      font-size: 0.72rem;
+      line-height: 1.4;
+      color: #ffffff;
+      opacity: 0.8;
+      text-align: center;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
   </style>
 </head>
@@ -158,33 +148,37 @@
 
   <div class="main-container">
     
-    <!-- RED 96.3 LIVE STATION (Official Secure Embed Player) -->
+    <!-- RED 96.3 LIVE STATION -->
     <div class="card">
       <h1>🎸 Red 96.3 Live</h1>
-      <div class="radio-iframe-container">
-        <iframe src="https://onlineradiobox.com/gr/red963/?cs=gr.red963&played=1" scrolling="no" allow="autoplay"></iframe>
+      <h2>📻 Αθήνα - Live Stream</h2>
+      
+      <div class="radio-box-container">
+        <!-- Online Radio Box Player -->
+        <iframe src="https://onlineradiobox.com/gr/red/player/?cs=gr.red&amp;mini=1" scrolling="no"></iframe>
       </div>
     </div>
 
-    <!-- PLANET ROCK LIVE PLAYLIST -->
+    <!-- PLANET ROCK LIVE STATION -->
     <div class="card">
       <h1>🎧 Planet Rock Live</h1>
-      <h2>Νο. 1 Rock μουσική στον πλανήτη</h2>
+      <h2>No. 1 Rock μουσική στον πλανήτη</h2>
       
       <div class="now-playing-box">
         <p class="now-playing-title" id="nowPlaying">Φόρτωση λίστας...</p>
       </div>
 
       <button class="btn-main" id="playlistBtn" onclick="togglePlaylist()">▶ PLAY</button>
-      <div class="status-text" id="playlistStatus">Έτοιμο για αναπαραγωγή</div>
-
-      <div class="controls-row">
-        <button class="btn-secondary" onclick="prevTrack()">⏮ Προηγούμενο</button>
-        <button class="btn-secondary" onclick="nextTrack()">Επόμενο ⏭</button>
-      </div>
+      <div class="status-text" id="playlistStatus">Έτοιμο</div>
     </div>
 
   </div>
+
+  <!-- LEGAL DISCLAIMER -->
+  <footer class="disclaimer-footer">
+    <strong>Legal Notice & Disclaimer:</strong><br>
+    This website is an independent fan project created for personal entertainment purposes only. It is not affiliated with, endorsed by, or connected to Red 96.3 FM Greece or Planet Rock UK. The name "Planet Rock" is used purely as a fan homage. All live radio streams are provided via third-party embedded widgets. All audio tracks, music recordings, logos, and trademarks belong exclusively to their respective owners, artists, and record labels. No copyright infringement is intended.
+  </footer>
 
   <script>
     // --- MP3 PLAYLIST AUDIO ---
@@ -249,38 +243,4 @@
       mp3Audio.play().then(() => {
         isPlaylistPlaying = true;
         playlistBtn.innerText = '⏸ PAUSE';
-        playlistBtn.style.background = 'linear-gradient(135deg, #444 0%, #222 100%)';
-        playlistStatus.innerText = "🎵 Παίζει τώρα";
-      }).catch(err => {
-        console.error(err);
-        playlistStatus.innerText = "Σφάλμα αναπαραγωγής";
-      });
-    }
-
-    function pausePlaylist() {
-      mp3Audio.pause();
-      isPlaylistPlaying = false;
-      playlistBtn.innerText = '▶ PLAY';
-      playlistBtn.style.background = 'linear-gradient(135deg, #ff2a4b 0%, #c41230 100%)';
-      playlistStatus.innerText = "Σε παύση";
-    }
-
-    function nextTrack() {
-      currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
-      loadTrack(currentTrackIndex, true);
-    }
-
-    function prevTrack() {
-      currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
-      loadTrack(currentTrackIndex, true);
-    }
-
-    mp3Audio.addEventListener('ended', () => {
-      nextTrack();
-    });
-
-    loadTrack(0, false);
-  </script>
-
-</body>
-</html>
+        playlist
