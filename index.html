@@ -69,19 +69,11 @@
       font-weight: 500;
     }
 
-    .radio-box-container {
+    audio {
       width: 100%;
-      min-height: 120px;
-      border-radius: 14px;
-      overflow: hidden;
-      background: #10141c;
-      border: 1px solid rgba(255, 255, 255, 0.08);
       margin-top: 10px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 10px;
-      box-sizing: border-box;
+      border-radius: 30px;
+      outline: none;
     }
 
     .btn-main {
@@ -149,13 +141,12 @@
       <h1>🎸 Red 96.3 Live</h1>
       <h2>📻 Αθήνα - Live Stream</h2>
       
-      <div class="radio-box-container">
-        <!-- Επίσημο Script Widget Online Radio Box -->
-        <script src="//onlineradiobox.com/js/pwidget.min.js" async></script>
-        <div class="orb-widget" data-station="gr.red" data-type="mini" data-theme="dark">
-          <a href="https://onlineradiobox.com/gr/red/">Red 96.3</a>
-        </div>
-      </div>
+      <!-- Native HTML5 Player για τον Red 96.3 -->
+      <audio controls preload="none">
+        <source src="https://stream.radiojar.com/red963" type="audio/mpeg">
+        <source src="https://s3.radiojar.com/red963" type="audio/mpeg">
+        Το πρόγραμμα περιήγησής σας δεν υποστηρίζει τον player.
+      </audio>
     </div>
 
     <!-- PLANET ROCK LIVE PLAYLIST -->
@@ -175,7 +166,7 @@
 
   <footer class="disclaimer-footer">
     <strong>Legal Notice & Disclaimer:</strong><br>
-    This website is an independent fan project created for personal entertainment purposes only. It is not affiliated with, endorsed by, or connected to Red 96.3 FM Greece or Planet Rock UK. The name "Planet Rock" is used purely as a fan homage. All live radio streams are provided via third-party embedded widgets. All audio tracks, music recordings, logos, and trademarks belong exclusively to their respective owners, artists, and record labels. No copyright infringement is intended.
+    This website is an independent fan project created for personal entertainment purposes only. It is not affiliated with, endorsed by, or connected to Red 96.3 FM Greece or Planet Rock UK. The name "Planet Rock" is used purely as a fan homage. All live radio streams are provided via third-party embedded widgets or public audio sources. All audio tracks, music recordings, logos, and trademarks belong exclusively to their respective owners, artists, and record labels. No copyright infringement is intended.
   </footer>
 
   <script>
@@ -210,7 +201,7 @@
       { title: "Scorpions - When The Smoke Is Going Down", file: "Scorpions - When The Smoke Is Going Down ....mp3" },
       { title: "Scorpions - Wind Of Change", file: "Scorpions - Wind Of Change (Official Music V....mp3" },
       { title: "Scorpions - Pictured Life", file: "Scorpions Pictured Life.mp3" },
-      { title: "Scorpions - Still Loving You", file: "Still Loving You - Scorpions [Remastered].mp3" },
+      { title: "Still Loving You - Scorpions [Remastered].mp3", file: "Still Loving You - Scorpions [Remastered].mp3" },
       { title: "Survivor - Eye Of The Tiger", file: "Survivor - Eye Of The Tiger (Official HD Video....mp3" },
       { title: "The Beatles - Here Comes The Sun", file: "The Beatles - Here Comes The Sun (Lyrics).mp3" }
     ];
@@ -220,44 +211,4 @@
     function loadTrack(index, autoPlay = false) {
       if (playlist.length === 0) return;
       currentTrackIndex = index;
-      mp3Audio.src = playlist[currentTrackIndex].file;
-      nowPlaying.innerText = "🎵 " + playlist[currentTrackIndex].title;
-      playlistStatus.innerText = "Έτοιμο";
-      if (autoPlay) playPlaylist();
-    }
-
-    function togglePlaylist() {
-      if (!isPlaylistPlaying) playPlaylist();
-      else pausePlaylist();
-    }
-
-    function playPlaylist() {
-      mp3Audio.play().then(() => {
-        isPlaylistPlaying = true;
-        playlistBtn.innerText = '⏸ PAUSE';
-        playlistBtn.style.background = 'linear-gradient(135deg, #444 0%, #222 100%)';
-        playlistStatus.innerText = "🎵 Παίζει τώρα";
-      }).catch(err => {
-        playlistStatus.innerText = "Σφάλμα αναπαραγωγής";
-      });
-    }
-
-    function pausePlaylist() {
-      mp3Audio.pause();
-      isPlaylistPlaying = false;
-      playlistBtn.innerText = '▶ PLAY';
-      playlistBtn.style.background = 'linear-gradient(135deg, #ff2a4b 0%, #c41230 100%)';
-      playlistStatus.innerText = "Σε παύση";
-    }
-
-    function nextTrack() {
-      currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
-      loadTrack(currentTrackIndex, true);
-    }
-
-    mp3Audio.addEventListener('ended', nextTrack);
-    loadTrack(0, false);
-  </script>
-
-</body>
-</html>
+      mp
